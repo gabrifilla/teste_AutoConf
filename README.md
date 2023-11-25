@@ -33,6 +33,7 @@ Acesse o aplicativo em `http://localhost:8000` no seu navegador.
 ## Uso
 
 1. Acesse a aplicação no navegador.
-2. Cadastre novos veículos, associando-os a marcas e modelos existentes.
-3. Utilize a funcionalidade de filtragem para encontrar veículos com base em critérios específicos.
-4. Edite ou exclua veículos conforme necessário.
+2. Realize o login utilizando a conta de email - admin@example.com com senha 123 (após rodar as Seeds)
+3. Cadastre novos veículos, associando-os a marcas e modelos existentes.
+4. Utilize a funcionalidade de filtragem para encontrar veículos com base em critérios específicos.
+5. Edite ou exclua veículos conforme necessário.

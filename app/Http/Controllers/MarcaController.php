@@ -13,6 +13,11 @@ class MarcaController extends Controller
     {
         return view('marcas.create');
     }
+
+    public function index(Request $request)
+    {   
+        return view('marcas.index');
+    }
     
     public function store(Request $request)
     {
@@ -24,6 +29,6 @@ class MarcaController extends Controller
             'nome' => $validatedData['nome'],
         ]);
 
-        return redirect()->route('veiculos.index')->with('success', 'Marca criada com sucesso!');
+        return redirect()->route('marcas.index')->with('success', 'Marca criada com sucesso!');
     }
 }

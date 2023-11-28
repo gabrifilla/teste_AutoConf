@@ -38,9 +38,15 @@
                 <label for="preco">Preço:</label>
                 <input type="text" class="form-control" name="preco" id="preco" value="{{ old('preco') }}">
             </div>
-            
+
+            <div class="form-group">
+                <label for="imagens">Imagens:</label>
+                <input type="file" name="imagens[]" accept="image/*" multiple>
+            </div>
+
             <button id="createVeiculoButton" type="submit" class="btn btn-primary">Cadastrar</button>
         </form>
+        <div id="previewContainer"></div>
     </div>
 
     <script>
@@ -93,6 +99,19 @@
                 } else {
                     // Se nenhuma marca é selecionada, exibir uma mensagem padrão no dropdown
                     $('#modelo_id').append('<option value="">Selecione uma marca</option>');
+                }
+            });
+
+            $('input[name="imagens[]"]').on('change', function () {
+                // Exibir pré-visualização das imagens selecionadas
+                $('#previewContainer').empty();
+
+                for (var i = 0; i < this.files.length; i++) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#previewContainer').append('<img src="' + e.target.result + '" width="100" height="100" />');
+                    };
+                    reader.readAsDataURL(this.files[i]);
                 }
             });
         });

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Veiculo;
 use App\Models\Marca;
 use App\Models\Modelo;
+use App\Models\ImagemVeiculo;
+
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
 
@@ -40,43 +43,70 @@ class VeiculoController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'marca_id' => 'required|integer',
-            'modelo_id' => 'required|integer',
-            'ano' => 'required|integer',
-            'cor' => 'required|string|max:255',
-            'preco' => 'required|numeric',
+        $request->validate([
+            'marca_id' => 'required',
+            'modelo_id' => 'required',
+            'ano' => 'required',
+            'cor' => 'required',
+            'preco' => 'required',
+            'imagens.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
     
+        // Cria o veículo
         $veiculo = Veiculo::create([
-            'marca_id' => $validatedData['marca_id'],
-            'modelo_id' => $validatedData['modelo_id'],
-            'ano' => $validatedData['ano'],
-            'cor' => $validatedData['cor'],
-            'preco' => $validatedData['preco'],
+            'marca_id' => $request->input('marca_id'),
+            'modelo_id' => $request->input('modelo_id'),
+            'ano' => $request->input('ano'),
+            'cor' => $request->input('cor'),
+            'preco' => $request->input('preco'),
         ]);
+    
+        // Salva as imagens,
+        if ($request->hasFile('imagens')) {
+            foreach ($request->file('imagens') as $imagem) {
+                $imagemPath = $imagem->store('imagem_veiculos', 'public');
 
+                $veiculo->imagensVeiculo()->create([
+                    'url' => Storage::url($imagemPath),
+                ]);
+            }
+        }
+    
         return redirect()->route('veiculos.index')->with('success', 'Veículo criado com sucesso!');
     }
 
-    public function update(Request $request, $veiculo)
+    public function update(Request $request, Veiculo $veiculo)
     {
-        $validatedData = $request->validate([
-            'marca_id' => 'required|integer',
-            'modelo_id' => 'required|integer',
-            'ano' => 'required|integer',
-            'cor' => 'required|string|max:255',
-            'preco' => 'required|numeric',
+        $request->validate([
+            'marca_id' => 'required',
+            'modelo_id' => 'required',
+            'ano' => 'required',
+            'cor' => 'required',
+            'preco' => 'required',
+            'imagens.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
     
-        $veiculo = Veiculo::findOrFail($veiculo);
-        $veiculo->marca_id = $validatedData['marca_id'];
-        $veiculo->modelo_id = $validatedData['modelo_id'];
-        $veiculo->ano = $validatedData['ano'];
-        $veiculo->cor = $validatedData['cor'];
-        $veiculo->preco = $validatedData['preco'];
+        // Atualiza os outros campos do veículo
+        $veiculo->update([
+            'marca_id' => $request->input('marca_id'),
+            'modelo_id' => $request->input('modelo_id'),
+            'ano' => $request->input('ano'),
+            'cor' => $request->input('cor'),
+            'preco' => $request->input('preco'),
+        ]);
     
-        $veiculo->save();
+        // Atualize a imagem
+        if ($request->hasFile('imagens')) {
+            dd('Chegou até aqui');
+            // Itera sobre as imagens e as associa ao veículo
+            foreach ($request->file('imagens') as $imagem) {
+                $imagemPath = $imagem->store('imagem_veiculos', 'public');
+    
+                $veiculo->imagensVeiculo()->create([
+                    'url' => Storage::url($imagemPath),
+                ]);
+            }
+        }
     
         return redirect()->route('veiculos.index')->with('success', 'Veículo atualizado com sucesso.');
     }

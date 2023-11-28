@@ -12,18 +12,69 @@
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+
+        #app {
+            display: flex;
+        }
+
+        /* Estilo do menu lateral */
+        .sidebar {
+            height: 100vh;
+            width: 250px;
+            background-color: #f8f9fa; /* Cor de fundo da sidebar */
+            padding-top: 20px;
+            border-right: 1px solid #dee2e6; /* Cor da borda direita da sidebar */
+        }
+
+        .sidebar a {
+            padding: 10px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #007bff; /* Cor dos links na sidebar */
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #e2e6ea; /* Cor de fundo ao passar o mouse */
+        }
+
+        /* Estilo do conteúdo principal */
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <!-- Navbar content -->
-        </nav>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="{{ route('modelos.index') }}">Modelos</a></li>
+                <li><a href="{{ route('veiculos.index') }}">Veículos</a></li>
+                <li><a href="{{ route('users.index') }}">Usuários</a></li>
+            </ul>
+        </div>
 
-        <!-- Conteúdo da página -->
-        <main class="py-4">
-            @yield('content')
-        </main>
+        <!-- Conteúdo principal -->
+        <div class="content">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <!-- Navbar content -->
+            </nav>
+
+            <!-- Conteúdo da página -->
+            <main class="py-4">
+                @yield('content')
+            </main>
+        </div>
     </div>
 
     <!-- Scripts -->

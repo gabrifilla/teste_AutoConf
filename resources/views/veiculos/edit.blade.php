@@ -47,8 +47,19 @@
                 <input type="text" class="form-control" name="preco" id="preco" value="{{ $veiculo->preco }}">
             </div>
 
+            <div class="form-group">
+                <label for="imagens">Imagens:</label>
+                <input type="file" name="imagens[]" accept="image/*" multiple>
+                <br>
+            </div>
+
             <button id="editVeiculoButton" type="submit" class="btn btn-primary">Atualizar</button>
         </form>
+        <div id="previewContainer">
+            @foreach($veiculo->imagens as $imagem)
+                <img src="{{ Storage::disk('s3')->url($imagem->imagem_path) }}" width="100" height="100" />
+            @endforeach
+        </div>
     </div>
 
     <script>
@@ -104,6 +115,19 @@
                 }
             });
             $('#marca_id').change();
+
+            $('input[name="imagens[]"]').on('change', function () {
+                // Exibir pré-visualização das novas imagens selecionadas
+                $('#previewContainer').empty();
+
+                for (var i = 0; i < this.files.length; i++) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#previewContainer').append('<img src="' + e.target.result + '" width="100" height="100" />');
+                    };
+                    reader.readAsDataURL(this.files[i]);
+                }
+            });
         });
     </script>
 @endsection

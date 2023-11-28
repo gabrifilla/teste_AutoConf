@@ -44,10 +44,12 @@
         Route::delete('/veiculos/{veiculo}', [VeiculoController::class, 'destroy'])->name('veiculos.destroy');
 
         // Marcas
+        Route::post('/marcas', [MarcaController::class, 'index'])->name('marcas.index');
         Route::get('/marcas/criar', [MarcaController::class, 'create'])->name('marcas.create');
         Route::post('/marcas', [MarcaController::class, 'store'])->name('marcas.store');
 
         // Modelos
+        Route::post('/modelos', [ModeloController::class, 'index'])->name('modelos.index');
         Route::get('/modelos/criar', [ModeloController::class, 'create'])->name('modelos.create');
         Route::post('/modelos', [ModeloController::class, 'store'])->name('modelos.store');
 

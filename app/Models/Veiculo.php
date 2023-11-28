@@ -42,4 +42,9 @@ class Veiculo extends Model
     {
         return $this->belongsTo(Modelo::class);
     }
+    
+    public function imagensVeiculo()
+    {
+        return $this->hasMany(ImagemVeiculo::class);
+    }
 }

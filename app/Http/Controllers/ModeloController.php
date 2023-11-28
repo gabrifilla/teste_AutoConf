@@ -16,7 +16,14 @@ class ModeloController extends Controller
 
         return view('modelos.create', compact('marcas'));
     }
-    
+
+    public function index(Request $request)
+    {   
+        $marcas = Marca::all();
+
+        return view('modelos.index', compact('marcas'));
+    }
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -29,7 +36,7 @@ class ModeloController extends Controller
             'marca_id' => $validatedData['marca_id'],
         ]);
 
-        return redirect()->route('veiculos.index')->with('success', 'Modelo criado com sucesso!');
+        return redirect()->route('modelos.index')->with('success', 'Modelo criado com sucesso!');
     }
 
 }

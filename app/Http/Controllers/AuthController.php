@@ -34,4 +34,15 @@ class AuthController extends Controller
             return back()->withInput()->withErrors(['email' => 'E-mail ou senha inválidos']);
         }
     }
+    
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/'); // Redirecione para onde quiser após o logout
+    }
 }

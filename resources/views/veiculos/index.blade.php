@@ -126,7 +126,7 @@
   }
 
   function atualizarListaVeiculos() {
-    var preco = $('#filtro-preco').val();
+    var preco = removerFormatacaoMoeda($('#filtro-preco').val());
     var marcas = $('#filtro-marcas').val();
     var modelos = $('#filtro-modelos').val();
 
@@ -157,47 +157,42 @@
     });
   }
 
-  // function atualizarListaVeiculos() {
-  //   var preco = $('#filtro-preco').val();
-  //   var marcas = $('#filtro-marcas').val();
-  //   var modelos = $('#filtro-modelos').val();
+  document.addEventListener('DOMContentLoaded', function () {
+    // Adiciona um ouvinte de evento para o campo de preço
+    document.getElementById('filtro-preco').addEventListener('blur', function (event) {
+      // Obtém o valor atual do campo
+      let valorCampo = event.target.value;
 
-  //   // Montar a URL com os filtros de pesquisa
-  //   var url = '/veiculos/filtrar?filtro-preco=' + encodeURIComponent(preco) + '&filtro-marcas=' + encodeURIComponent(status);
-  //   console.log(url);
+      // Remove caracteres não numéricos
+      valorCampo = valorCampo.replace(/[^\d,]/g, '');
 
-  //   $.ajax({
-  //     url: url,
-  //     type: 'GET',
-  //     success: function(response) {
-  //       // Atualizar a tabela de usuários com os dados filtrados
-  //       var tableBody = $('#tabela-veiculos tbody');
-  //       tableBody.empty();
+      // Converte para número
+      let valorNumerico = parseFloat(valorCampo.replace(',', '.'));
 
-  //       $.each(response, function(index, veic) {
-  //         var row = '<tr>' +
-  //           '<td>' + veic.id + '</td>' +
-  //           '<td>' + veic.marca_id + '</td>' +
-  //           '<td>' + veic.modelo_id + '</td>' +
-  //           '<td>' + veic.ano + '</td>' +
-  //           '<td>' + veic.cor + '</td>' +
-  //           '<td>' + veic.preco + '</td>' +
-  //           '<td>' +
-  //           '<a href="/veiculos/' + veic.id + '/editar" class="btn btn-primary">Editar</a>' +
-  //           '<form action="/veiculos/' + veic.id + '" method="POST" style="display: inline-block;">' +
-  //           '@csrf' +
-  //           '@method("DELETE")' +
-  //           '<button type="submit" class="btn btn-danger" onclick="return confirm(\'Tem certeza que deseja excluir este veículo?\')">Excluir</button>' +
-  //           '</form>' +
-  //           '</td>' +
-  //           '</tr>';
+      // Formata o número como moeda e atualiza o valor no campo
+      event.target.value = formatarMoeda(valorNumerico);
+    });
 
-  //         tableBody.append(row);
-  //       });
-  //     },
-  //     error: function(xhr) {
-  //       console.log(xhr.responseText);
-  //     }
-  //   });
-  // }
+    function formatarMoeda(valor) {
+      if (typeof valor !== 'number') {
+        valor = parseFloat(valor.replace(/[^\d.,]/g, '').replace(',', '.'));
+      }
+
+      if (!isNaN(valor)) {
+        return 'R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+      return valor;
+    }
+
+  });
+  
+  function removerFormatacaoMoeda(valor) {
+    // Remove todos os caracteres não numéricos
+    let valorNumerico = parseFloat(valor.replace(/[^\d,]/g, '').replace(',', '.'));
+
+    // Formata o número removendo os zeros adicionais no final
+    return valorNumerico.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 20 }).replace(',', '');
+  }
+
+
 </script>

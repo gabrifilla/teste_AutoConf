@@ -97,7 +97,6 @@ class VeiculoController extends Controller
     
         // Atualize a imagem
         if ($request->hasFile('imagens')) {
-            dd('Chegou até aqui');
             // Itera sobre as imagens e as associa ao veículo
             foreach ($request->file('imagens') as $imagem) {
                 $imagemPath = $imagem->store('imagem_veiculos', 'public');

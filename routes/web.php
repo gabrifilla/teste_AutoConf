@@ -44,14 +44,24 @@
         Route::delete('/veiculos/{veiculo}', [VeiculoController::class, 'destroy'])->name('veiculos.destroy');
 
         // Marcas
-        Route::post('/marcas', [MarcaController::class, 'index'])->name('marcas.index');
+        Route::get('/marcas', [MarcaController::class, 'index'])->name('marcas.index');
         Route::get('/marcas/criar', [MarcaController::class, 'create'])->name('marcas.create');
         Route::post('/marcas', [MarcaController::class, 'store'])->name('marcas.store');
+        Route::get('/marcas/{marca}/editar', [MarcaController::class, 'edit'])->name('marcas.edit');
+        Route::delete('/marcas/{marca}', [MarcaController::class, 'destroy'])->name('marcas.destroy');
+        Route::put('/marcas/{marca}', [MarcaController::class, 'update'])->name('marcas.update');
 
         // Modelos
-        Route::post('/modelos', [ModeloController::class, 'index'])->name('modelos.index');
+        Route::get('/modelos', [ModeloController::class, 'index'])->name('modelos.index');
         Route::get('/modelos/criar', [ModeloController::class, 'create'])->name('modelos.create');
         Route::post('/modelos', [ModeloController::class, 'store'])->name('modelos.store');
+        Route::get('/modelos/{modelo}/editar', [ModeloController::class, 'edit'])->name('modelos.edit');
+        Route::delete('/modelos/{modelo}', [ModeloController::class, 'destroy'])->name('modelos.destroy');
+        Route::put('/modelos/{modelo}', [ModeloController::class, 'update'])->name('modelos.update');
+
+
+        // Logout
+        Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     });
 

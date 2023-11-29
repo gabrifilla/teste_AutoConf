@@ -33,12 +33,16 @@ class VeiculoController extends Controller
     
     public function edit(Veiculo $veiculo)
     {
+        // Carrega as relações antes de acessá-las
+        $veiculo->load('marca', 'modelo', 'imagensVeiculo');
+
         $marcas = Marca::all();
         $modelos = Modelo::all();
 
-        $veiculo->load('marca', 'modelo');
+        // Agora você pode acessar as imagens diretamente da relação
+        $imagens = $veiculo->imagensVeiculo;
 
-        return view('veiculos.edit', compact('veiculo', 'marcas', 'modelos'));
+        return view('veiculos.edit', compact('veiculo', 'marcas', 'modelos', 'imagens'));
     }
 
     public function store(Request $request)
@@ -61,16 +65,39 @@ class VeiculoController extends Controller
             'preco' => $request->input('preco'),
         ]);
     
-        // Salva as imagens,
+        // Tentativa de salvar as imagens em um bucket s3 para melhor escalonamento de sistema
+        // if ($request->hasFile('imagens')) {
+        //     foreach ($request->file('imagens') as $imagem) {
+        //         // Gere um nome único para cada imagem
+        //         $nomeUnico = uniqid().'.'.$imagem->getClientOriginalExtension();
+
+        //         // Salve a imagem no S3 usando o método put
+        //         $imagemPath = Storage::disk('s3')->put('testeautoconf/' . $nomeUnico, $imagem, 'public');
+
+        //         // Crie o registro correspondente na tabela imagens_veiculos
+        //         $veiculo->imagensVeiculo()->create([
+        //             'url' => Storage::disk('s3')->url('testeautoconf/' . $nomeUnico),
+        //         ]);
+        //     }
+        // }
+
+        // Salva as imagens
         if ($request->hasFile('imagens')) {
             foreach ($request->file('imagens') as $imagem) {
-                $imagemPath = $imagem->store('imagem_veiculos', 'public');
+                // Gere um nome único para cada imagem
+                $nomeUnico = uniqid().'.'.$imagem->getClientOriginalExtension();
 
+                // Salve a imagem localmente usando o método storeAs
+                $imagemPath = $imagem->storeAs('testeautoconf', $nomeUnico, 'public');
+
+                // Crie o registro correspondente na tabela imagens_veiculos
                 $veiculo->imagensVeiculo()->create([
-                    'url' => Storage::url($imagemPath),
+                    'url' => $nomeUnico, // A URL é o nome do arquivo local
                 ]);
             }
         }
+
+
     
         return redirect()->route('veiculos.index')->with('success', 'Veículo criado com sucesso!');
     }
@@ -95,14 +122,18 @@ class VeiculoController extends Controller
             'preco' => $request->input('preco'),
         ]);
     
-        // Atualize a imagem
-        if ($request->hasFile('imagens')) {
-            // Itera sobre as imagens e as associa ao veículo
+         // Salva as imagens
+         if ($request->hasFile('imagens')) {
             foreach ($request->file('imagens') as $imagem) {
-                $imagemPath = $imagem->store('imagem_veiculos', 'public');
-    
+                // Gere um nome único para cada imagem
+                $nomeUnico = uniqid().'.'.$imagem->getClientOriginalExtension();
+
+                // Salve a imagem localmente usando o método storeAs
+                $imagemPath = $imagem->storeAs('testeautoconf', $nomeUnico, 'public');
+
+                // Crie o registro correspondente na tabela imagens_veiculos
                 $veiculo->imagensVeiculo()->create([
-                    'url' => Storage::url($imagemPath),
+                    'url' => $nomeUnico, // A URL é o nome do arquivo local
                 ]);
             }
         }

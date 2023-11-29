@@ -7,6 +7,9 @@
         <form action="{{ route('marcas.index') }}" method="GET">
           @csrf
           <div class="row">
+            <div class="col-md-12 mb-3">
+              <a href="{{ route('marcas.create') }}" class="btn btn-primary">Cadastrar Marca</a>
+            </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label for="filtro-marcas">Marcas:</label>

@@ -4,7 +4,7 @@
     <div class="container">
         <h1>Cadastro de Veículo</h1>
         
-        <form id="createVeiculoForm" action="{{ route('veiculos.store') }}" method="POST">
+        <form id="createVeiculoForm" action="{{ route('veiculos.store') }}" enctype="multipart/form-data" method="POST">
             @csrf
             
             <div class="form-group">
@@ -51,16 +51,19 @@
 
     <script>
         $(document).ready(function () {
+            
             // Função de envio do formulário
             $('#createVeiculoForm').submit(function (event) {
                 event.preventDefault();
 
-                var formData = $(this).serialize();
+                var formData = new FormData($(this)[0]);
 
                 $.ajax({
                     url: $(this).attr('action'),
                     type: 'POST',
                     data: formData,
+                    contentType: false,
+                    processData: false,
                     success: function (response) {
                         // Sucesso ao salvar o veículo
                         alert('Veículo criado com sucesso!');

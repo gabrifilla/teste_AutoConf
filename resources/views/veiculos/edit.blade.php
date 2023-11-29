@@ -56,8 +56,8 @@
             <button id="editVeiculoButton" type="submit" class="btn btn-primary">Atualizar</button>
         </form>
         <div id="previewContainer">
-            @foreach($veiculo->imagens as $imagem)
-                <img src="{{ Storage::disk('s3')->url($imagem->imagem_path) }}" width="100" height="100" />
+            @foreach($imagens as $imagem)
+                <img src="{{ asset('storage/testeautoconf/' . $imagem->url) }}" width="100" height="100" />
             @endforeach
         </div>
     </div>
@@ -88,7 +88,6 @@
 
             // Para aparecer apenas os modelos especificos para cada Marca de carro
             $('#marca_id').change(function () {
-                console.log('oi')
                 var marcaId = $(this).val();
                 $('#modelo_id').empty();
 

@@ -7,14 +7,8 @@
         <form action="{{ route('veiculos.index') }}" method="GET">
           @csrf
           <div class="row">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-12 mb-3">
               <a href="{{ route('veiculos.create') }}" class="btn btn-primary">Cadastrar Veículo</a>
-            </div>
-            <div class="col-md-4 mb-3">
-              <a href="{{ route('marcas.create') }}" class="btn btn-primary">Cadastrar Marcas</a>
-            </div>
-            <div class="col-md-4 mb-3">
-              <a href="{{ route('modelos.create') }}" class="btn btn-primary">Cadastrar Modelos</a>
             </div>
             <div class="col-md-3">
               <div class="form-group">

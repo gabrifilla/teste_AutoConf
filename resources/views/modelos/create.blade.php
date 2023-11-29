@@ -6,6 +6,10 @@
         
         <form id="createModeloForm" action="{{ route('modelos.store') }}" method="POST">
             @csrf
+            <div class="form-group">
+                <label for="nome">Modelo:</label>
+                <input type="text" class="form-control" name="nome" id="nome" value="{{ old('nome') }}">
+            </div>
             
             <div class="form-group">
                 <label for="marca_id">Marca:</label>
@@ -16,12 +20,6 @@
                     @endforeach
                 </select>
             </div>
-            
-            <div class="form-group">
-                <label for="nome">Modelo:</label>
-                <input type="text" class="form-control" name="nome" id="nome" value="{{ old('nome') }}">
-            </div>
-            
             <button id="createModeloButton" type="submit" class="btn btn-primary">Cadastrar</button>
         </form>
     </div>
